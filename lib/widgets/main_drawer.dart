@@ -11,23 +11,24 @@ class MainDrawer extends StatelessWidget {
         children: [
           AppBar(
             title: Text('Hello Friend'),
-            // automaticallyImplyLeading: true,
+            automaticallyImplyLeading: false,
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.shop),
             title: Text('Shop'),
             onTap: () {
-              Navigator.pushReplacementNamed(
-                  context, ProductsOverviewScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(ProductsOverviewScreen.routeName);
             },
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.shop),
+            leading: Icon(Icons.payment),
             title: Text('Orders'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, OrdersScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(OrdersScreen.routeName);
             },
           ),
         ],
