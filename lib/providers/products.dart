@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import './product.dart';
 
@@ -53,17 +56,60 @@ class Products with ChangeNotifier {
     return _items.firstWhere((product) => product.id == id);
   }
 
-  void addProduct(Product product) {
-    // _items.add(value);
-    final newProduct = Product(
-      description: product.description,
-      imageUrl: product.imageUrl,
-      price: product.price,
-      title: product.title,
-      id: DateTime.now().toString(),
-    );
-    _items.add(newProduct);
-    notifyListeners();
+  Future<void> addProduct(Product product) async {
+    final url = Uri.parse(
+        'https://shop-app-73929-default-rtdb.firebaseio.com/products.json');
+
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
+            'title': product.title,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'isFavorite': product.isFavorite,
+          },
+        ),
+      );
+      final newProduct = Product(
+        description: product.description,
+        imageUrl: product.imageUrl,
+        price: product.price,
+        title: product.title,
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newProduct);
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+
+    // return http
+    //     .post(
+    //   url,
+    //   body: json.encode({
+    //     'title': product.title,
+    //     'description': product.description,
+    //     'imageUrl': product.imageUrl,
+    //     'price': product.price,
+    //     'isFavorite': product.isFavorite
+    //   }),
+    // )
+    //     .then((response) {
+    //   final newProduct = Product(
+    //     description: product.description,
+    //     imageUrl: product.imageUrl,
+    //     price: product.price,
+    //     title: product.title,
+    //     id: json.decode(response.body)['name'],
+    //   );
+    //   _items.add(newProduct);
+    //   notifyListeners();
+    // }).catchError((err) {
+    //   throw err;
+    // });
   }
 
   void updateProduct(String id, Product product) {
