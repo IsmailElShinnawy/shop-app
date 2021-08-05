@@ -38,17 +38,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  FlatButton(
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                        cart.items.values.toList(),
-                        cart.totalAmount,
-                      );
-                      cart.clear();
-                    },
-                    child: Text('ORDER NOW'),
-                    textColor: Theme.of(context).primaryColor,
-                  )
+                  OrderButton(cart: cart)
                 ],
               ),
             ),
@@ -67,6 +57,87 @@ class CartScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      onPressed: widget.cart.totalAmount <= 0 || _isLoading
+          ? null
+          : () async {
+              try {
+                setState(() {
+                  _isLoading = true;
+                });
+                await Provider.of<Orders>(context, listen: false).addOrder(
+                  widget.cart.items.values.toList(),
+                  widget.cart.totalAmount,
+                );
+                widget.cart.clear();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Your order has been placed',
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: Duration(
+                      seconds: 2,
+                    ),
+                    // action: SnackBarAction(
+                    //   label: 'UNDO',
+                    //   onPressed: () {
+                    //     cart.removeSingleItem(product.id);
+                    //   },
+                    // ),
+                  ),
+                );
+                setState(() {
+                  _isLoading = false;
+                });
+              } catch (err) {
+                await showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text(
+                      'An error occured',
+                    ),
+                    content: Text(
+                      'Something went wrong.',
+                    ),
+                    actions: [
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Text('Okay'),
+                      )
+                    ],
+                  ),
+                );
+              }
+            },
+      child: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Text('ORDER NOW'),
+      textColor: Theme.of(context).primaryColor,
     );
   }
 }

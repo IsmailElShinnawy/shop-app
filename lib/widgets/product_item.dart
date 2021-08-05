@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/product_detail_sceen.dart';
+import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
 import '../providers/cart.dart';
 // import '../providers/products.dart';
@@ -23,7 +23,7 @@ class ProductItem extends StatelessWidget {
         child: GestureDetector(
           child: Image.network(product.imageUrl, fit: BoxFit.cover),
           onTap: () => Navigator.of(context).pushNamed(
-            ProductDetailSceen.routeName,
+            ProductDetailScreen.routeName,
             arguments: product.id,
           ),
         ),
@@ -51,18 +51,19 @@ class ProductItem extends StatelessWidget {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                    content: Text(
-                      'Added item to cart',
-                    ),
-                    duration: Duration(
-                      seconds: 2,
-                    ),
-                    action: SnackBarAction(
-                      label: 'UNDO',
-                      onPressed: () {
-                        cart.removeSingleItem(product.id);
-                      },
-                    )),
+                  content: Text(
+                    'Added item to cart',
+                  ),
+                  duration: Duration(
+                    seconds: 2,
+                  ),
+                  action: SnackBarAction(
+                    label: 'UNDO',
+                    onPressed: () {
+                      cart.removeSingleItem(product.id);
+                    },
+                  ),
+                ),
               );
             },
             color: Theme.of(context).accentColor,

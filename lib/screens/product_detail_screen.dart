@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
 
-class ProductDetailSceen extends StatelessWidget {
+class ProductDetailScreen extends StatelessWidget {
   static const routeName = '/product-detail';
 
   @override
