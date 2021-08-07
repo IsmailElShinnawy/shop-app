@@ -37,56 +37,59 @@ class _OrderItemState extends State<OrderItem> {
               },
             ),
           ),
-          if (_expanded)
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 15),
-              height: min(widget.order.products.length * 20.0 + 10.0, 100.0),
-              child: ListView(
-                children: widget.order.products
-                    .map(
-                      (product) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            product.title,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+          // if (_expanded)
+          AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 15),
+            height: _expanded
+                ? min(widget.order.products.length * 20.0 + 10.0, 100.0)
+                : 0.0,
+            child: ListView(
+              children: widget.order.products
+                  .map(
+                    (product) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          product.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Text(
-                            '${product.quantity}x \$${product.price}',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
-              // .builder(
-              //   itemBuilder: (ctx, idx) => Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       Text(
-              //         widget.order.products[idx].title,
-              //         style: TextStyle(
-              //           fontSize: 18,
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //       ),
-              //       Text(
-              //         '${widget.order.products[idx].quantity}x \$${widget.order.products[idx].price}',
-              //         style: TextStyle(
-              //           fontSize: 18,
-              //         ),
-              //       )
-              //     ],
-              //   ),
-              //   itemCount: widget.order.products.length,
-              // ),
-            )
+                        ),
+                        Text(
+                          '${product.quantity}x \$${product.price}',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+            // .builder(
+            //   itemBuilder: (ctx, idx) => Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text(
+            //         widget.order.products[idx].title,
+            //         style: TextStyle(
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //       Text(
+            //         '${widget.order.products[idx].quantity}x \$${widget.order.products[idx].price}',
+            //         style: TextStyle(
+            //           fontSize: 18,
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            //   itemCount: widget.order.products.length,
+            // ),
+          )
         ],
       ),
     );
