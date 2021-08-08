@@ -5,6 +5,7 @@ import '../screens/orders_screen.dart';
 import '../screens/products_overview_screen.dart';
 import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
+import '../helpers/custom_route.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -31,6 +32,11 @@ class MainDrawer extends StatelessWidget {
             leading: Icon(Icons.payment),
             title: Text('Orders'),
             onTap: () {
+              // Navigator.of(context).pushReplacement(
+              //   CustomRoute(
+              //     builder: (ctx) => OrdersScreen(),
+              //   ),
+              // );
               Navigator.of(context)
                   .pushReplacementNamed(OrdersScreen.routeName);
             },
